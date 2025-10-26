@@ -19,3 +19,4 @@ development:
   hot_reload: false
   mock_apis: false
   debug_mode: false
+enable_auto_restart: true
