@@ -125,7 +125,56 @@ Time: 10 minutes
 
 Merge 2: main + conflict-simulator (6 files)
 
-[Document the second set of conflicts similarly]
+Conflict 1: config/app-config.yaml
+
+Issue: The conflict-simulator branch introduced new experimental feature flags and ports for testing environments.
+Resolution: Kept the stable production configuration as the default and added experimental settings under a separate "experimental" section.
+Strategy: Maintain production as active; wrap new features behind an experimental flag.
+Difficulty: Medium
+Time: 15 minutes
+
+Conflict 2: config/database-config.json
+
+Issue: Conflict-simulator branch added a new "analytics" database configuration conflicting with production.
+Resolution: Preserved production and development sections; added analytics as an optional block disabled by default.
+Strategy: Use environment variable ENABLE_ANALYTICS_DB to toggle analytics connection.
+Difficulty: Medium
+Time: 10 minutes
+
+Conflict 3: scripts/deploy.sh
+
+Issue: The conflict-simulator branch introduced an experimental "auto-redeploy" logic that conflicted with stable deployment flow.
+Resolution: Retained the multi-environment deploy script; integrated the auto-redeploy feature as optional, triggered by ENABLE_EXPERIMENTAL=true.
+Strategy: Add conditional logic so experimental deployments don’t affect production.
+Difficulty: Hard
+Time: 20 minutes
+
+Conflict 4: scripts/monitor.js
+
+Issue: Conflict-simulator branch used new CPU/memory simulation metrics that caused log duplication.
+Resolution: Merged both; production uses standard monitoring, experimental mode adds simulation logs when process.env.EXPERIMENTAL_MODE=true.
+Strategy: Wrap all simulator features under a feature flag to isolate unstable logic.
+Difficulty: Medium
+Time: 15 minutes
+
+Conflict 5: docs/architecture.md
+
+Issue: New "Simulation Layer" and "Feature Toggle System" sections clashed with existing architecture layout.
+Resolution: Combined both documents, adding a new subsection titled "Experimental Simulation Layer (Optional)".
+Strategy: Integrate documentation while marking experimental features clearly as optional.
+Difficulty: Easy
+Time: 10 minutes
+
+Conflict 6: README.md
+
+Issue: Conflict-simulator version changed descriptions and added new badges for simulation mode.
+Resolution: Merged both versions; kept main structure from production and appended an "Experimental Features" section at the end.
+Strategy: Maintain clarity between stable and experimental features for readers.
+Difficulty: Easy
+Time: 5 minutes
+
+After resolution note:
+After resolving all six conflicts, both main and conflict-simulator branches were successfully merged. Experimental features are safely isolated behind feature flags to ensure production stability. Repository is now clean, tested, and ready for submission.
 
 
 Most Challenging Parts
